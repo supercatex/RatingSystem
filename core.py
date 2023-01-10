@@ -52,12 +52,15 @@ class Calculator(object):
                 user_i.seed += self.calc_p(user_j, user_i)
 
         sum_delta = 0.0
+        max_rank = 0.0
         for uid, user in self.users.items():
             rating = (user.rank * user.seed) ** 0.5
             user.delta = (self.calc_rating(user, rating) - user.rating) / 2
             sum_delta += user.delta
+            max_rank = max(max_rank, user.rank)
 
-        inc = -sum_delta / len(self.users) - 1
+        # inc = -sum_delta / len(self.users) - 1
+        inc = -sum_delta / max_rank - 1
         for uid, user in self.users.items():
             user.delta += inc
         s = min(len(self.users), int(4 * round(len(self.users) ** 0.5)))

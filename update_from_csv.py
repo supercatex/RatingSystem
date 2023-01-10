@@ -126,7 +126,8 @@ class Zero1Result(object):
                         rank, uid = float(a[0]), a[1]
                         self.users.append(User(uid, rank, 1500))
                     elif len(a) <= 11:
-                        pass
+                        rank, uid = float(a[0]), a[10].strip()
+                        if len(uid) > 0: self.users.append(User(uid, rank, 1500))
                     elif len(a) == 12:
                         rank, uid_a, uid_b = float(a[0]), a[10].strip(), a[11].strip()
                         if len(uid_a) > 0: self.users.append(User(uid_a, rank, 1500))
@@ -174,7 +175,12 @@ if __name__ == "__main__":
         "data/校內編程競賽2021第一季.csv",
         "data/校內編程競賽2021第二季.csv",
         "data/校內編程競賽2021第三季.csv",
-        "data/校內編程競賽2022第一季.csv"
+        "data/CSP2022-J1.csv",
+        "data/CSP2022-S1.csv",
+        "data/CSP2022-J2.csv",
+        "data/CSP2022-S2.csv",
+        "data/校內編程競賽2022第一季.csv",
+        "data/NOIP2022.csv",
     ]
     _db_path = "data/demo.db"
 
