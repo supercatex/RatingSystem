@@ -41,8 +41,15 @@ class Zero1Result(object):
             for line in f.readlines():
                 a = line.strip().split(",")
                 if not a[0].isnumeric(): continue
-                rank, uid = float(a[0]), a[1]
-                self.users.append(User(uid, rank, 1500))
+                if len(a) == 10:
+                    rank, uid = float(a[0]), a[1]
+                    self.users.append(User(uid, rank, 1500))
+                elif len(a) <= 11:
+                    pass
+                elif len(a) == 12:
+                    rank, uid_a, uid_b = float(a[0]), a[10].strip(), a[11].strip()
+                    if len(uid_a) > 0: self.users.append(User(uid_a, rank, 1500))
+                    if len(uid_b) > 0: self.users.append(User(uid_b, rank, 1500))
 
         self.db = DB(db_path)
         for user in self.users:
@@ -75,7 +82,8 @@ if __name__ == "__main__":
     _csv_paths = [
         "data/demo_1.csv",
         "data/demo_2.csv",
-        "data/demo_3.csv"
+        "data/demo_3.csv",
+        "data/demo_4.csv"
     ]
     _db_path = "data/demo.db"
 
@@ -83,8 +91,9 @@ if __name__ == "__main__":
         _zr = Zero1Result(_csv_path, _db_path)
         _zr.calc_all_rating()
         _zr.update_users()
-
-        print("# %s" % _csv_path)
-        for _user in _zr.users:
-            print(_user)
         _zr.close()
+
+    _db = DB(_db_path)
+    _users = _db.get_users()
+    for _user in _users:
+        print("%s\t%.2f" % (_user[0], _user[1]))
